@@ -1,7 +1,8 @@
+from base64 import b64decode
+from collections import Counter
+
 from set_1_challenge_3 import xor_key
 from set_1_challenge_5 import xor_repeated_key
-from collections import Counter
-from base64 import b64decode
 
 
 def hamming_distance(string_1, string_2):
@@ -72,7 +73,6 @@ def main():
         key.append(sorted(scores, key=lambda x: x[0], reverse=True)[0][1])
 
     print(key_length_guess, xor_repeated_key(cipher_text, key))
-
 
 
 if __name__ == '__main__':

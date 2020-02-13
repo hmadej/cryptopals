@@ -4,7 +4,7 @@ b64_encoding_table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345
 # b64_table = 'WXYZlabcd3fghijko12e456789ABCDEFGHIJKL+/MNOPQRSTUVmn0pqrstuvwxyz'
 
 
-def b64_encode(input_bytes, table):
+def b64_encode(table, input_bytes, padding_char='='):
     bits = ''.join(list(map(lambda byte: bin(byte)[2:].zfill(8), input_bytes)))
     rest = bits
     encoding_accumulator = ''
@@ -16,17 +16,17 @@ def b64_encode(input_bytes, table):
 
     if len(rest) == 4:
         rest += '00'
-        encoding_accumulator += table[int(rest, 2)] + '='
+        encoding_accumulator += table[int(rest, 2)] + padding_char
     elif len(rest) == 2:
         rest += '0000'
-        encoding_accumulator += table[int(rest, 2)] + '=='
+        encoding_accumulator += table[int(rest, 2)] + padding_char * 2
 
     return encoding_accumulator
 
 
-def b64_decode(input_string, table):
+def b64_decode(table, input_string, padding_char='='):
     try:
-        bits = ''.join(list(map(lambda char: bin(table.index(char))[2:].zfill(6), input_string.strip('='))))
+        bits = ''.join(list(map(lambda char: bin(table.index(char))[2:].zfill(6), input_string.strip(padding_char))))
         rest = bits
         decoding_accumulator = []
         while len(rest) >= 8:
@@ -51,11 +51,11 @@ def main():
 
     print(hex_bytes)
     print(
-        b64_encode(hex_bytes, b64_encoding_table) == 'SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t')
+        b64_encode(b64_encoding_table, hex_bytes) == 'SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t')
     print(fixed_xor(b'\x1c\x01\x11\x00\x1f\x01\x01\x00\x06\x1a\x02\x4b\x53\x53\x50\x09\x18\x1c',
                     b'\x68\x69\x74\x20\x74\x68\x65\x20\x62\x75\x6c\x6c\x27\x73\x20\x65\x79\x65')
           .hex())
-    print(b64_decode('SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t', b64_encoding_table))
+    print(b64_decode(b64_encoding_table, 'SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t'))
 
 
 if __name__ == '__main__':

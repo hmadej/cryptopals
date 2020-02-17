@@ -1,8 +1,8 @@
 from base64 import b64decode
 from collections import Counter
 
-from set_1_challenge_3 import xor_key
-from set_1_challenge_5 import xor_repeated_key
+from set_1.set_1_challenge_3 import xor_key
+from set_1.set_1_challenge_5 import xor_repeated_key
 
 
 def hamming_distance(string_1, string_2):

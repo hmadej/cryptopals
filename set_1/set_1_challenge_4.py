@@ -1,4 +1,4 @@
-from set_1_challenge_3 import histogram_scoring
+from set_1.set_1_challenge_3 import histogram_scoring
 
 
 def main():

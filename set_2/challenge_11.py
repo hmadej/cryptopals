@@ -42,18 +42,18 @@ def generate_key(num):
     return bytes([random.getrandbits(8) for _ in range(num)])
 
 
-def is_ECB_mode(cipher_text):
-    size = 16
+def is_ECB_mode(cipher_text, block_size):
+    size = block_size
     blocks = set()
     for i in range(0, len(cipher_text), size):
         blocks.add(cipher_text[i:i + size])
 
-    return not len(blocks) == len(cipher_text) // 16
+    return not len(blocks) == len(cipher_text) // size
 
 
 def main():
     for _ in range(100):
-        print(is_ECB_mode(encryption_oracle(b'a' * 16 * 4)))
+        print(is_ECB_mode(encryption_oracle(b'a' * 16 * 4), 16))
 
 
 if __name__ == '__main__':

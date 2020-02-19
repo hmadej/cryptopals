@@ -11,13 +11,14 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 
 def encrypt_ECB(key, plaintext):
+    block_size = len(key)
     cipher = Cipher(algorithms.AES(bytes(key)), modes.ECB(), backend=default_backend())
     en = cipher.encryptor()
     cipher_text = []
-    for i in range(0, len(plaintext) - 1, 16):
-        block = plaintext[i:i + 16]
-        if len(block) != 16:
-            block = pkcs7_pad(16, block)
+    for i in range(0, len(plaintext) - 1, block_size):
+        block = plaintext[i:i + block_size]
+        if len(block) != block_size:
+            block = pkcs7_pad(block_size, block)
         cipher_text.append(en.update(block))
     en.finalize()
     return reduce(lambda a, b: a + b, cipher_text)
